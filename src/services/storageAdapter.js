@@ -22,10 +22,7 @@ export function initStorage() {
     localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(initialData.user));
   }
 
-  // Se não houver sessão ativa, podemos iniciar com a sessão do usuário padrão do db.json
-  if (!localStorage.getItem(STORAGE_KEYS.SESSION)) {
-    localStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(initialData.user));
-  }
+  // Não iniciamos sessão automática: o usuário deve sempre passar pela tela de login primeiro
 
   if (!localStorage.getItem(STORAGE_KEYS.CALENDAR)) {
     localStorage.setItem(STORAGE_KEYS.CALENDAR, JSON.stringify(initialData.calendarActivities));

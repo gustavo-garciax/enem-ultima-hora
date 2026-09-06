@@ -20,8 +20,14 @@ export default function Login() {
   const [regPassword, setRegPassword] = useState('');
   const [regGrade, setRegGrade] = useState('3º ano — Nível Médio');
 
-  const { login, register } = useAuth();
+  const { user, login, register } = useAuth();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
