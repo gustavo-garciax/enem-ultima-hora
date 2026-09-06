@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #5842ED;
+  --primary-hover: #4834D4;
+  --primary-light: #ECEAFC;
+  --sidebar-bg: #0F0E1E;
+  --sidebar-hover: #1E1C38;
+  --sidebar-text: #9493B8;
+  --bg-page: #F6F7FB;
+  --card-bg: #FFFFFF;
+  --text-main: #14132A;
+  --text-muted: #8280A3;
+  --border-color: #EAEBF2;
+  --shadow-sm: 0 2px 8px rgba(20, 19, 42, 0.04);
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+}
+
+.app-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.main-wrapper {
+  flex: 1;
+  margin-left: 260px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.page-content {
+  padding: 32px 40px 48px;
+  flex: 1;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.badge-green { background: #EAF8F1; color: #17B26A; }
+.badge-purple { background: #ECEAFC; color: #5842ED; }
+.badge-blue { background: #EDF4FE; color: #2F80ED; }
+.badge-orange { background: #FFF4E5; color: #F79009; }
+.badge-red { background: #FEF3F2; color: #F04438; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+input {
+  font-family: inherit;
+  outline: none;
+}
+
