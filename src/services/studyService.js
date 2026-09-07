@@ -24,6 +24,7 @@ export const studyService = {
       subject: activity.subject || 'Geral',
       title: activity.title,
       time: activity.time || '10:00',
+      duration: activity.duration ? Number(activity.duration) : 60,
       status: activity.status || 'pendente',
       color: activity.color || '#5842ED',
     };
@@ -92,15 +93,7 @@ export const studyService = {
   },
 
   /**
-   * Obtém os próximos estudos
-   */
-  async getNextStudies() {
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    return storageAdapter.get(storageAdapter.KEYS.NEXT_STUDIES, []);
-  },
-
-  /**
-   * Obtém dados da meta semanal
+   * Obtém a meta semanal (só a parte configurável: meta em horas / período)
    */
   async getWeeklyGoal() {
     await new Promise((resolve) => setTimeout(resolve, 100));
@@ -108,11 +101,10 @@ export const studyService = {
   },
 
   /**
-   * Obtém os dados de métricas do dashboard
+   * Obtém a parte configurável do progresso geral (hoje, só a nota de simulado)
    */
-  async getDashboardStats() {
+  async getOverallProgress() {
     await new Promise((resolve) => setTimeout(resolve, 100));
-    return storageAdapter.get(storageAdapter.KEYS.STATS, []);
+    return storageAdapter.get(storageAdapter.KEYS.OVERALL_PROGRESS, {});
   },
 };
-

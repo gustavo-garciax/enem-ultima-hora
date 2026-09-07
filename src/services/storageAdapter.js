@@ -8,21 +8,18 @@ const STORAGE_KEYS = {
   NEXT_STUDIES: 'enem_next_studies',
   STATS: 'enem_dashboard_stats',
   WEEKLY_GOAL: 'enem_weekly_goal',
+  PROGRESS_STATS: 'enem_progress_stats',
+  WEEKLY_PROGRESS: 'enem_weekly_progress',
+  OVERALL_PROGRESS: 'enem_overall_progress',
+  FEATURED_STUDY: 'enem_featured_study',
 };
 
-/**
- * Inicializa os dados no LocalStorage caso ainda não existam.
- * Permite que a aplicação use dados dinâmicos e persistentes,
- * mantendo compatibilidade com um futuro backend/API.
- */
 export function initStorage() {
   if (typeof window === 'undefined') return;
 
   if (!localStorage.getItem(STORAGE_KEYS.USER)) {
     localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(initialData.user));
   }
-
-  // Não iniciamos sessão automática: o usuário deve sempre passar pela tela de login primeiro
 
   if (!localStorage.getItem(STORAGE_KEYS.CALENDAR)) {
     localStorage.setItem(STORAGE_KEYS.CALENDAR, JSON.stringify(initialData.calendarActivities));
@@ -43,6 +40,22 @@ export function initStorage() {
   if (!localStorage.getItem(STORAGE_KEYS.WEEKLY_GOAL)) {
     localStorage.setItem(STORAGE_KEYS.WEEKLY_GOAL, JSON.stringify(initialData.weeklyGoal));
   }
+
+  if (!localStorage.getItem(STORAGE_KEYS.PROGRESS_STATS)) {
+    localStorage.setItem(STORAGE_KEYS.PROGRESS_STATS, JSON.stringify(initialData.progressStats));
+  }
+
+  if (!localStorage.getItem(STORAGE_KEYS.WEEKLY_PROGRESS)) {
+    localStorage.setItem(STORAGE_KEYS.WEEKLY_PROGRESS, JSON.stringify(initialData.weeklyProgress));
+  }
+
+  if (!localStorage.getItem(STORAGE_KEYS.OVERALL_PROGRESS)) {
+    localStorage.setItem(STORAGE_KEYS.OVERALL_PROGRESS, JSON.stringify(initialData.overallProgress));
+  }
+
+  if (!localStorage.getItem(STORAGE_KEYS.FEATURED_STUDY)) {
+    localStorage.setItem(STORAGE_KEYS.FEATURED_STUDY, JSON.stringify(initialData.featuredStudy));
+  }
 }
 
 export const storageAdapter = {
@@ -54,7 +67,6 @@ export const storageAdapter = {
       return defaultValue;
     }
   },
-
   set(key, value) {
     try {
       localStorage.setItem(key, JSON.stringify(value));
@@ -62,7 +74,6 @@ export const storageAdapter = {
       console.error('Erro ao gravar no localStorage:', e);
     }
   },
-
   remove(key) {
     try {
       localStorage.removeItem(key);
@@ -70,7 +81,5 @@ export const storageAdapter = {
       console.error('Erro ao remover do localStorage:', e);
     }
   },
-
   KEYS: STORAGE_KEYS,
 };
-

@@ -7,55 +7,15 @@ import ProgressBar from '../components/ProgressBar';
 import { useData } from '../context/DataContext';
 import './MeuProgresso.css';
 
-export default function MeuProgresso() {
-  const { subjects } = useData();
-  const topStats = [
-    {
-      title: '58%',
-      subtitle: 'Progresso Geral',
-      badge: '↑ 6% este mês',
-      badgeClass: 'badge-purple',
-      icon: Target,
-      iconColor: '#5842ED',
-      iconBg: '#ECEAFC'
-    },
-    {
-      title: '86h',
-      subtitle: 'Total de Horas',
-      badge: 'Este trimestre',
-      badgeClass: 'badge-blue',
-      icon: Clock,
-      iconColor: '#2F80ED',
-      iconBg: '#EDF4FE'
-    },
-    {
-      title: '110',
-      subtitle: 'Atividades Concluídas',
-      badge: 'de 190 planejadas',
-      badgeClass: 'badge-green',
-      icon: CheckSquare,
-      iconColor: '#12B76A',
-      iconBg: '#EAF8F1'
-    },
-    {
-      title: '14 dias',
-      subtitle: 'Dias Consecutivos',
-      badge: 'Sequência atual 🔥',
-      badgeClass: 'badge-orange',
-      icon: Flame,
-      iconColor: '#FB6514',
-      iconBg: '#FFF4E5'
-    }
-  ];
+const ICON_STYLE_MAP = {
+  Target: { icon: Target, iconColor: '#5842ED', iconBg: '#ECEAFC' },
+  Clock: { icon: Clock, iconColor: '#2F80ED', iconBg: '#EDF4FE' },
+  CheckSquare: { icon: CheckSquare, iconColor: '#12B76A', iconBg: '#EAF8F1' },
+  Flame: { icon: Flame, iconColor: '#FB6514', iconBg: '#FFF4E5' },
+};
 
-  const weeklyData = [
-    { label: 'Sem 1', hours: 8, heightPct: 40 },
-    { label: 'Sem 2', hours: 12, heightPct: 60 },
-    { label: 'Sem 3', hours: 10, heightPct: 50 },
-    { label: 'Sem 4', hours: 16, heightPct: 80 },
-    { label: 'Sem 5', hours: 14, heightPct: 70 },
-    { label: 'Sem 6', hours: 18, heightPct: 90 },
-  ];
+export default function MeuProgresso() {
+  const { subjects, progressStats, weeklyProgress, overallProgress, loading } = useData();
 
   const colLeft = [
     subjects.find((s) => s.id === 'portugues'),
@@ -71,6 +31,17 @@ export default function MeuProgresso() {
     subjects.find((s) => s.id === 'fisica'),
   ].filter(Boolean);
 
+  if (loading) {
+    return (
+      <div className="progresso-page">
+        <Header pageTitle="Meu Progresso" />
+        <div className="page-content">
+          <p className="page-subtitle">Carregando seus dados...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="progresso-page">
       <Header pageTitle="Meu Progresso" />
@@ -79,15 +50,16 @@ export default function MeuProgresso() {
         <p className="page-subtitle">Acompanhe sua evolução e desempenho ao longo do tempo</p>
 
         <div className="metrics-grid">
-          {topStats.map((stat, i) => {
-            const Icon = stat.icon;
+          {progressStats.map((stat) => {
+            const style = ICON_STYLE_MAP[stat.icon] || ICON_STYLE_MAP.Target;
+            const Icon = style.icon;
             return (
-              <div key={i} className="card metric-card">
+              <div key={stat.id} className="card metric-card">
                 <div className="metric-header">
-                  <div className="metric-icon-box" style={{ backgroundColor: stat.iconBg, color: stat.iconColor }}>
+                  <div className="metric-icon-box" style={{ backgroundColor: style.iconBg, color: style.iconColor }}>
                     <Icon size={18} />
                   </div>
-                  <span className={`badge ${stat.badgeClass}`}>{stat.badge}</span>
+                  <span className={`badge ${stat.badgeType}`}>{stat.badge}</span>
                 </div>
                 <div className="metric-value">{stat.title}</div>
                 <div className="metric-sub">{stat.subtitle}</div>
@@ -109,15 +81,12 @@ export default function MeuProgresso() {
             </div>
 
             <div className="bar-chart-container">
-              {weeklyData.map((bar, i) => (
+              {weeklyProgress.map((bar, i) => (
                 <div key={i} className="bar-col">
                   <div className="bar-slot">
-                    <div
-                      className="bar-fill-element"
-                      style={{ height: `${bar.heightPct}%` }}
-                    />
+                    <div className="bar-fill-element" style={{ height: `${bar.heightPct}%` }} />
                   </div>
-                  <span className="bar-label-text">{bar.label}</span>
+                  <span className="bar-label-text">{bar.week}</span>
                 </div>
               ))}
             </div>
@@ -127,8 +96,8 @@ export default function MeuProgresso() {
             <span className="dark-prog-kicker">PROGRESSO GERAL</span>
             <div className="dark-donut-wrapper">
               <CircularProgressbar
-                value={58}
-                text="58%"
+                value={overallProgress?.percentage || 0}
+                text={`${overallProgress?.percentage || 0}%`}
                 styles={buildStyles({
                   textSize: '20px',
                   pathColor: '#7C6CE8',
@@ -143,11 +112,13 @@ export default function MeuProgresso() {
             <div className="dark-stats-footer">
               <div className="dark-stat-row">
                 <span>Prova simulada</span>
-                <span className="dark-stat-val">72%</span>
+                <span className="dark-stat-val">{overallProgress?.simulatedExamScore ?? 0}%</span>
               </div>
               <div className="dark-stat-row">
                 <span>Redações feitas</span>
-                <span className="dark-stat-val">8/12</span>
+                <span className="dark-stat-val">
+                  {overallProgress?.essaysDone ?? 0}/{overallProgress?.essaysTotal ?? 0}
+                </span>
               </div>
             </div>
           </div>
@@ -197,4 +168,3 @@ export default function MeuProgresso() {
     </div>
   );
 }
-

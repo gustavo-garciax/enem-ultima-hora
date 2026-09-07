@@ -21,15 +21,24 @@ const SUBJECT_OPTIONS = [
   { name: 'Química', color: '#FB6514' },
 ];
 
+function formatDuration(minutes) {
+  const m = Number(minutes) || 60;
+  const h = Math.floor(m / 60);
+  const rest = m % 60;
+  if (h === 0) return `${rest}min`;
+  if (rest === 0) return `${h}h`;
+  return `${h}h${rest}min`;
+}
+
 export default function Calendario() {
   const { calendarActivities, addCalendarActivity, updateActivityStatus, deleteCalendarActivity } = useData();
   const [selectedDay, setSelectedDay] = useState(5);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Form de nova atividade
   const [newSubject, setNewSubject] = useState('Matemática');
   const [newTitle, setNewTitle] = useState('');
   const [newTime, setNewTime] = useState('14:00');
+  const [newDuration, setNewDuration] = useState(60);
   const [newStatus, setNewStatus] = useState('pendente');
 
   const currentMonth = 8; // Setembro (0-indexed)
@@ -72,11 +81,13 @@ export default function Calendario() {
       subject: newSubject,
       title: newTitle.trim(),
       time: newTime || '14:00',
+      duration: newDuration || 60,
       status: newStatus,
       color: chosenSub ? chosenSub.color : '#5842ED',
     });
 
     setNewTitle('');
+    setNewDuration(60);
     setIsModalOpen(false);
   };
 
@@ -95,7 +106,6 @@ export default function Calendario() {
       <Header pageTitle="Calendário" />
       <div className="page-content">
         <div className="calendar-layout">
-          {/* Coluna Esquerda: Grade do Calendário */}
           <div className="card calendar-main-card">
             <div className="calendar-card-header">
               <div>
@@ -170,7 +180,6 @@ export default function Calendario() {
             </div>
           </div>
 
-          {/* Coluna Direita: Painel do Dia Selecionado */}
           <div className="card day-details-panel">
             <div className="day-panel-top">
               <span className="day-panel-kicker">DIA SELECIONADO</span>
@@ -214,7 +223,7 @@ export default function Calendario() {
                     <h4 className="act-title">{act.title}</h4>
                     <div className="act-footer">
                       <span className="act-time">
-                        <Clock size={13} /> {act.time || '10:00'}
+                        <Clock size={13} /> {act.time || '10:00'} • {formatDuration(act.duration)}
                       </span>
                       <div
                         onClick={() => handleToggleStatus(act)}
@@ -231,7 +240,6 @@ export default function Calendario() {
           </div>
         </div>
 
-        {/* Modal de Adicionar Estudo */}
         {isModalOpen && (
           <div className="modal-backdrop">
             <div className="modal-container">
@@ -284,17 +292,29 @@ export default function Calendario() {
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Status Inicial</label>
-                    <select
-                      value={newStatus}
-                      onChange={(e) => setNewStatus(e.target.value)}
-                      className="form-control form-select-light"
-                    >
-                      <option value="pendente">Pendente</option>
-                      <option value="em_andamento">Em andamento</option>
-                      <option value="concluida">Concluída</option>
-                    </select>
+                    <label className="form-label">Duração (minutos)</label>
+                    <input
+                      type="number"
+                      min="5"
+                      step="5"
+                      value={newDuration}
+                      onChange={(e) => setNewDuration(e.target.value)}
+                      className="form-control form-control-light"
+                    />
                   </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Status Inicial</label>
+                  <select
+                    value={newStatus}
+                    onChange={(e) => setNewStatus(e.target.value)}
+                    className="form-control form-select-light"
+                  >
+                    <option value="pendente">Pendente</option>
+                    <option value="em_andamento">Em andamento</option>
+                    <option value="concluida">Concluída</option>
+                  </select>
                 </div>
 
                 <div className="modal-actions">

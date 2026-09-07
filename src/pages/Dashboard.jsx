@@ -9,49 +9,28 @@ import { useAuth } from '../context/AuthContext';
 import { useData } from '../context/DataContext';
 import './Dashboard.css';
 
+const ICON_STYLE_MAP = {
+  BookOpen: { icon: BookOpen, iconColor: '#5842ED', iconBg: '#ECEAFC' },
+  Clock: { icon: Clock, iconColor: '#8E59E2', iconBg: '#F3EAFD' },
+  CheckCircle2: { icon: CheckCircle2, iconColor: '#2F80ED', iconBg: '#EDF4FE' },
+  TrendingUp: { icon: TrendingUp, iconColor: '#F79009', iconBg: '#FFF4E5' },
+};
+
 export default function Dashboard() {
   const { user } = useAuth();
-  const { subjects, nextStudies, weeklyGoal } = useData();
+  const { subjects, nextStudies, weeklyGoal, stats, featuredStudy, loading } = useData();
   const navigate = useNavigate();
 
-  const topStats = [
-    {
-      title: '4 matérias',
-      subtitle: 'Estudos de Hoje',
-      badge: '2 concluídas',
-      badgeClass: 'badge-green',
-      icon: BookOpen,
-      iconColor: '#5842ED',
-      iconBg: '#ECEAFC'
-    },
-    {
-      title: '3h 45min',
-      subtitle: 'Horas Estudadas',
-      badge: '+12% esta semana',
-      badgeClass: 'badge-purple',
-      icon: Clock,
-      iconColor: '#8E59E2',
-      iconBg: '#F3EAFD'
-    },
-    {
-      title: '24',
-      subtitle: 'Atividades Concluídas',
-      badge: 'de 38 planejadas',
-      badgeClass: 'badge-blue',
-      icon: CheckCircle2,
-      iconColor: '#2F80ED',
-      iconBg: '#EDF4FE'
-    },
-    {
-      title: '58%',
-      subtitle: 'Progresso Geral',
-      badge: '↑ 8% este mês',
-      badgeClass: 'badge-orange',
-      icon: TrendingUp,
-      iconColor: '#F79009',
-      iconBg: '#FFF4E5'
-    }
-  ];
+  if (loading) {
+    return (
+      <div className="dashboard-page">
+        <Header pageTitle="Dashboard" />
+        <div className="page-content">
+          <p className="page-subtitle">Carregando seus dados...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard-page">
@@ -62,17 +41,17 @@ export default function Dashboard() {
           <p className="page-subtitle">Continue de onde parou — você está indo muito bem!</p>
         </div>
 
-        {/* 4 Cards de Métricas */}
         <div className="metrics-grid">
-          {topStats.map((stat, i) => {
-            const Icon = stat.icon;
+          {stats.map((stat) => {
+            const style = ICON_STYLE_MAP[stat.icon] || ICON_STYLE_MAP.BookOpen;
+            const Icon = style.icon;
             return (
-              <div key={i} className="card metric-card">
+              <div key={stat.id} className="card metric-card">
                 <div className="metric-header">
-                  <div className="metric-icon-box" style={{ backgroundColor: stat.iconBg, color: stat.iconColor }}>
+                  <div className="metric-icon-box" style={{ backgroundColor: style.iconBg, color: style.iconColor }}>
                     <Icon size={18} />
                   </div>
-                  <span className={`badge ${stat.badgeClass}`}>{stat.badge}</span>
+                  <span className={`badge ${stat.badgeType}`}>{stat.badge}</span>
                 </div>
                 <div className="metric-value">{stat.title}</div>
                 <div className="metric-sub">{stat.subtitle}</div>
@@ -81,57 +60,49 @@ export default function Dashboard() {
           })}
         </div>
 
-        {/* Grid Principal: Esquerda (Destaque + Próximos) / Direita (Meta + Progresso) */}
         <div className="dashboard-main-layout">
-          {/* Coluna Esquerda */}
           <div className="dashboard-left-col">
-            {/* Card Roxo Escuro de Estudo Atual */}
-            <div className="featured-study-card">
-              <div className="featured-top-tag">
-                <span className="live-dot" />
-                <span>Próxima atividade</span>
-              </div>
-              <span className="featured-category-label">ESTUDE AGORA</span>
-              <h2 className="featured-title">Funções Quadráticas</h2>
-              <div className="featured-subject-badge">
-                <span className="subject-name-tag">Matemática</span>
-                <span className="subject-sep">•</span>
-                <span className="subject-sub-tag">Álgebra</span>
-              </div>
-              <p className="featured-details">Aula teórica • 10 exercícios • Hoje às 13:00</p>
-
-              <div className="featured-actions">
-                <button
-                  onClick={() => navigate('/calendario')}
-                  className="btn-primary-purple"
-                >
-                  Começar Estudo <ArrowRight size={16} />
-                </button>
-                <button
-                  onClick={() => navigate('/conteudos')}
-                  className="btn-secondary-dark"
-                >
-                  Ver detalhes
-                </button>
-              </div>
-
-              <div className="featured-footer-stats">
-                <div className="f-stat-item">
-                  <span className="f-stat-label">Duração</span>
-                  <span className="f-stat-val">1h 30min</span>
+            {featuredStudy && (
+              <div className="featured-study-card">
+                <div className="featured-top-tag">
+                  <span className="live-dot" />
+                  <span>{featuredStudy.badge || 'Próxima atividade'}</span>
                 </div>
-                <div className="f-stat-item">
-                  <span className="f-stat-label">Dificuldade</span>
-                  <span className="f-stat-val">Médio</span>
+                <span className="featured-category-label">{featuredStudy.tag || 'ESTUDE AGORA'}</span>
+                <h2 className="featured-title">{featuredStudy.title}</h2>
+                <div className="featured-subject-badge">
+                  <span className="subject-name-tag">{featuredStudy.subject}</span>
+                  <span className="subject-sep">•</span>
+                  <span className="subject-sub-tag">{featuredStudy.area}</span>
                 </div>
-                <div className="f-stat-item">
-                  <span className="f-stat-label">Questões</span>
-                  <span className="f-stat-val">10 exercícios</span>
+                <p className="featured-details">{featuredStudy.details}</p>
+
+                <div className="featured-actions">
+                  <button onClick={() => navigate('/calendario')} className="btn-primary-purple">
+                    Começar Estudo <ArrowRight size={16} />
+                  </button>
+                  <button onClick={() => navigate('/conteudos')} className="btn-secondary-dark">
+                    Ver detalhes
+                  </button>
+                </div>
+
+                <div className="featured-footer-stats">
+                  <div className="f-stat-item">
+                    <span className="f-stat-label">Duração</span>
+                    <span className="f-stat-val">{featuredStudy.duration}</span>
+                  </div>
+                  <div className="f-stat-item">
+                    <span className="f-stat-label">Dificuldade</span>
+                    <span className="f-stat-val">{featuredStudy.difficulty}</span>
+                  </div>
+                  <div className="f-stat-item">
+                    <span className="f-stat-label">Questões</span>
+                    <span className="f-stat-val">{featuredStudy.questions}</span>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
-            {/* Próximos Estudos */}
             <div className="card next-studies-card">
               <div className="card-header-flex">
                 <h3 className="section-heading">Próximos Estudos</h3>
@@ -152,9 +123,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Coluna Direita */}
           <div className="dashboard-right-col">
-            {/* Meta da Semana com Donut */}
             <div className="card weekly-goal-card">
               <div className="card-header-flex">
                 <div>
@@ -166,8 +135,8 @@ export default function Dashboard() {
               <div className="goal-donut-container">
                 <div className="donut-wrapper">
                   <CircularProgressbar
-                    value={weeklyGoal?.percentage || 62}
-                    text={`${weeklyGoal?.percentage || 62}%`}
+                    value={weeklyGoal?.percentage || 0}
+                    text={`${weeklyGoal?.percentage || 0}%`}
                     styles={buildStyles({
                       textSize: '19px',
                       pathColor: '#5842ED',
@@ -184,23 +153,17 @@ export default function Dashboard() {
                 <div className="breakdown-row">
                   <span className="breakdown-label">Horas estudadas</span>
                   <span className="breakdown-val">
-                    {weeklyGoal?.studiedHours || 12}h / {weeklyGoal?.targetHours || 20}h
+                    {weeklyGoal?.studiedHours ?? 0}h / {weeklyGoal?.targetHours ?? 0}h
                   </span>
                 </div>
-                <ProgressBar
-                  value={weeklyGoal?.percentage || 60}
-                  color="#5842ED"
-                  showValue={false}
-                  height={8}
-                />
+                <ProgressBar value={weeklyGoal?.percentage || 0} color="#5842ED" showValue={false} height={8} />
                 <div className="breakdown-row bottom-row">
-                  <span className="breakdown-sub">{weeklyGoal?.period || 'Segunda — Domingo'}</span>
-                  <span className="breakdown-sub">{weeklyGoal?.remainingHours || 8}h restantes</span>
+                  <span className="breakdown-sub">{weeklyGoal?.period || ''}</span>
+                  <span className="breakdown-sub">{weeklyGoal?.remainingHours ?? 0}h restantes</span>
                 </div>
               </div>
             </div>
 
-            {/* Progresso por Matéria */}
             <div className="card subject-progress-card">
               <h3 className="section-heading" style={{ marginBottom: '18px' }}>Progresso por Matéria</h3>
               <div className="progress-bars-stack">
