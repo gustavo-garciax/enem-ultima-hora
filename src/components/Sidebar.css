@@ -12,6 +12,7 @@
   padding: 24px 16px;
   z-index: 100;
   box-sizing: border-box;
+  transition: transform 0.3s ease;
 }
 
 .sidebar-brand {
@@ -184,3 +185,63 @@
   color: #F87171;
 }
 
+/* ===== NOVO: botão hambúrguer e botão fechar ===== */
+
+.sidebar-mobile-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 90;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: var(--sidebar-bg);
+  color: #FFFFFF;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.sidebar-close-btn {
+  display: none;
+  margin-left: auto;
+  background: transparent;
+  color: #A09EBF;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.sidebar-close-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+}
+
+/* ===== RESPONSIVO ===== */
+
+@media (max-width: 768px) {
+  .sidebar-mobile-toggle {
+    display: flex;
+  }
+
+  .sidebar-close-btn {
+    display: flex;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    width: 260px;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+  }
+}

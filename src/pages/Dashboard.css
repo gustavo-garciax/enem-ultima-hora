@@ -326,3 +326,73 @@
   font-weight: 600;
   color: var(--text-muted);
 }
+
+/* ===== RESPONSIVO ===== */
+
+@media (max-width: 1100px) {
+  .dashboard-main-layout {
+    grid-template-columns: 1fr; /* coluna direita desce pra baixo */
+  }
+}
+
+@media (max-width: 900px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr); /* 4 → 2 colunas */
+  }
+}
+
+@media (max-width: 768px) {
+  .metric-card {
+    padding: 16px 18px;
+  }
+
+  .metric-value {
+    font-size: 21px;
+  }
+
+  .featured-study-card {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .featured-title {
+    font-size: 20px;
+  }
+
+  .featured-actions {
+    flex-wrap: wrap;
+  }
+
+  .btn-primary-purple,
+  .btn-secondary-dark {
+    flex: 1;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .featured-footer-stats {
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .card-header-flex {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .study-row-item {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .metrics-grid {
+    grid-template-columns: 1fr; /* 1 card por linha em telas bem pequenas */
+  }
+
+  .featured-actions {
+    flex-direction: column;
+  }
+}

@@ -188,3 +188,44 @@
   color: var(--text-muted);
 }
 
+/* ===== RESPONSIVO ===== */
+
+@media (max-width: 900px) {
+  .progress-mid-layout {
+    grid-template-columns: 1fr; /* gráfico e card escuro empilham */
+  }
+
+  .subjects-columns-grid {
+    grid-template-columns: 1fr; /* colunas de matérias empilham */
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .weekly-chart-card,
+  .subject-breakdown-card {
+    padding: 18px;
+  }
+
+  .dark-prog-card {
+    padding: 20px;
+  }
+
+  .chart-header-row {
+    margin-bottom: 24px;
+  }
+
+  .bar-chart-container {
+    height: 140px;
+    padding: 0 8px 12px;
+  }
+
+  .subj-detail-top {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .subj-detail-stats {
+    white-space: nowrap;
+  }
+}

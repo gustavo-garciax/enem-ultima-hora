@@ -282,3 +282,22 @@
   text-align: center;
 }
 
+/* ===== RESPONSIVO ===== */
+
+@media (max-width: 380px) {
+  .login-wrapper {
+    padding: 16px;
+  }
+
+  .login-main-card {
+    padding: 22px;
+  }
+
+  .login-brand-title {
+    font-size: 20px;
+  }
+
+  .login-brand-header {
+    margin-bottom: 20px;
+  }
+}

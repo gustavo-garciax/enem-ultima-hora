@@ -68,3 +68,27 @@
   font-weight: 700;
 }
 
+/* ===== RESPONSIVO ===== */
+
+@media (max-width: 1100px) {
+  .subjects-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .subjects-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .subjects-cards-grid {
+    grid-template-columns: 1fr; /* um card por linha */
+    gap: 14px;
+  }
+
+  .subject-box-card {
+    padding: 18px;
+  }
+}

@@ -420,3 +420,71 @@
 .btn-modal-submit:hover {
   background: var(--primary-hover);
 }
+
+/* ===== RESPONSIVO ===== */
+
+@media (max-width: 900px) {
+  .calendar-layout {
+    grid-template-columns: 1fr; /* empilha calendário e painel */
+  }
+}
+
+@media (max-width: 768px) {
+  .calendar-main-card {
+    padding: 18px;
+  }
+
+  .calendar-card-header {
+    margin-bottom: 16px;
+  }
+
+  .month-title {
+    font-size: 16px;
+  }
+
+  .day-cell {
+    border-radius: 8px;
+    gap: 2px;
+  }
+
+  .day-number {
+    font-size: 12px;
+  }
+
+  .calendar-legend-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+  }
+
+  .legend-items {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .day-details-panel {
+    padding: 18px;
+  }
+
+  .modal-container {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .modal-form > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important; /* horário e duração empilham */
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .btn-modal-cancel,
+  .btn-modal-submit {
+    width: 100%;
+    text-align: center;
+  }
+}

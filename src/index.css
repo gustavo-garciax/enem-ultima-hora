@@ -104,3 +104,19 @@ input {
   outline: none;
 }
 
+/* ===== RESPONSIVO ===== */
+
+@media (max-width: 768px) {
+  .main-wrapper {
+    margin-left: 0;
+  }
+
+  .page-content {
+    padding: 24px 16px 40px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+}
+

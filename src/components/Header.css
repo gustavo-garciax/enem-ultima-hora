@@ -9,12 +9,16 @@
   position: sticky;
   top: 0;
   z-index: 50;
+  gap: 12px;
 }
 
 .header-page-title {
   font-size: 15px;
   font-weight: 600;
   color: #14132A;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .header-right {
@@ -70,6 +74,7 @@
   color: #5E5D7A;
   position: relative;
   transition: all 0.2s;
+  flex-shrink: 0;
 }
 
 .bell-button:hover {
@@ -86,4 +91,31 @@
   height: 6px;
   border-radius: 50%;
   background-color: #5842ED;
+}
+
+/* ===== RESPONSIVO ===== */
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0 16px;
+    height: 64px;
+  }
+
+  .search-box {
+    width: 160px;
+  }
+
+  .header-page-title {
+    max-width: 40%;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-box {
+    display: none; /* esconde a busca no mobile, ou vira um ícone que abre um modal */
+  }
+
+  .header-right {
+    gap: 10px;
+  }
 }
