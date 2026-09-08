@@ -1,0 +1,173 @@
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-18px); }
+}
+
+@keyframes glitch {
+  0% { text-shadow: 3px 0 #F04438, -3px 0 #06AED4; transform: translate(0); }
+  20% { text-shadow: -3px 0 #F04438, 3px 0 #06AED4; transform: translate(-2px, 2px); }
+  40% { text-shadow: 3px 0 #06AED4, -3px 0 #FB6514; transform: translate(2px, -2px); }
+  60% { text-shadow: -3px 0 #12B76A, 3px 0 #5842ED; transform: translate(-1px, 1px); }
+  80% { text-shadow: 3px 0 #F79009, -3px 0 #8E59E2; transform: translate(1px, -1px); }
+  100% { text-shadow: 3px 0 #F04438, -3px 0 #06AED4; transform: translate(0); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+@keyframes spinOrbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseRing {
+  0% { box-shadow: 0 0 0 0 rgba(88, 66, 237, 0.6); }
+  70% { box-shadow: 0 0 0 30px rgba(88, 66, 237, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(88, 66, 237, 0); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-2deg) scale(1); }
+  50% { transform: rotate(2deg) scale(1.05); }
+}
+
+.notfound-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0D0C1D, #1a1440, #2a1b5e, #0D0C1D, #1a0f3d);
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
+  padding: 24px;
+}
+
+.notfound-stars,
+.notfound-stars2,
+.notfound-stars3 {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+                    radial-gradient(2px 2px at 60px 70px, #fff, transparent),
+                    radial-gradient(1px 1px at 90px 40px, #8E59E2, transparent),
+                    radial-gradient(2px 2px at 130px 80px, #fff, transparent),
+                    radial-gradient(1px 1px at 160px 20px, #06AED4, transparent),
+                    radial-gradient(2px 2px at 200px 100px, #fff, transparent);
+  background-repeat: repeat;
+  background-size: 220px 220px;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.notfound-stars2 {
+  background-size: 300px 300px;
+  animation-duration: 5s;
+  animation-delay: 1s;
+  opacity: 0.6;
+}
+
+.notfound-stars3 {
+  background-size: 160px 160px;
+  animation-duration: 4s;
+  animation-delay: 2s;
+  opacity: 0.4;
+}
+
+.notfound-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 520px;
+}
+
+.notfound-icon-orbit {
+  position: relative;
+  margin-bottom: 32px;
+  animation: floatUp 3s ease-in-out infinite;
+}
+
+.notfound-icon-orbit::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  border: 2px dashed rgba(88, 66, 237, 0.4);
+  border-radius: 50%;
+  animation: spinOrbit 8s linear infinite;
+}
+
+.notfound-icon-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5842ED, #8E59E2, #06AED4);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulseRing 2.5s infinite;
+  box-shadow: 0 0 40px rgba(88, 66, 237, 0.5);
+}
+
+.notfound-code {
+  font-size: 130px;
+  font-weight: 900;
+  line-height: 1;
+  margin: 0 0 16px;
+  color: #fff;
+  letter-spacing: -4px;
+  animation: glitch 2.5s infinite;
+}
+
+.notfound-title {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #8E59E2, #06AED4, #FB6514, #8E59E2);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientShift 4s linear infinite;
+  margin: 0 0 16px;
+}
+
+.notfound-subtitle {
+  font-size: 16px;
+  color: #c4c2e0;
+  line-height: 1.6;
+  margin: 0 0 36px;
+}
+
+.notfound-btn {
+  position: relative;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 36px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+  background: linear-gradient(90deg, #5842ED, #8E59E2, #06AED4, #5842ED);
+  background-size: 300% auto;
+  animation: gradientShift 3s linear infinite, wiggle 2s ease-in-out infinite;
+  box-shadow: 0 8px 24px rgba(88, 66, 237, 0.5);
+  transition: transform 0.2s ease;
+}
+
+.notfound-btn:hover {
+  transform: scale(1.08) rotate(0deg) !important;
+  animation-play-state: paused;
+}

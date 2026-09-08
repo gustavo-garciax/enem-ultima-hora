@@ -10,6 +10,7 @@ import Conteudos from './pages/Conteudos';
 import MeuProgresso from './pages/MeuProgresso';
 import Configuracoes from './pages/Configuracoes';
 import Login from './pages/Login';
+import NotFound from './pages/NotFound';
 
 // Layout autenticado padrão (com Sidebar e container principal)
 function AppLayout() {
@@ -24,7 +25,7 @@ function AppLayout() {
             <Route path="/conteudos" element={<Conteudos />} />
             <Route path="/progresso" element={<MeuProgresso />} />
             <Route path="/configuracoes" element={<Configuracoes />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
       </div>
