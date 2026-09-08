@@ -396,3 +396,27 @@
     flex-direction: column;
   }
 }
+
+.btn-secondary-dark-pdf {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.btn-secondary-dark-pdf {
+  background-color: #ed2f2f;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-secondary-dark-pdf:hover {
+  background-color: #c42525;
+}

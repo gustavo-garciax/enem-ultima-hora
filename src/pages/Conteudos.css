@@ -92,3 +92,24 @@
     padding: 18px;
   }
 }
+
+.btn-pdf-card {
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background-color: #ed2f2f;
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+  text-decoration: none;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+
+.btn-pdf-card:hover {
+  background-color: #c42525;
+}
