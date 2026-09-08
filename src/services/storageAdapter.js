@@ -21,14 +21,6 @@ export function initStorage() {
     localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(initialData.user));
   }
 
-  if (!localStorage.getItem(STORAGE_KEYS.CALENDAR)) {
-    localStorage.setItem(STORAGE_KEYS.CALENDAR, JSON.stringify(initialData.calendarActivities));
-  }
-
-  if (!localStorage.getItem(STORAGE_KEYS.SUBJECTS)) {
-    localStorage.setItem(STORAGE_KEYS.SUBJECTS, JSON.stringify(initialData.subjects));
-  }
-
   if (!localStorage.getItem(STORAGE_KEYS.NEXT_STUDIES)) {
     localStorage.setItem(STORAGE_KEYS.NEXT_STUDIES, JSON.stringify(initialData.nextStudies));
   }
@@ -37,20 +29,8 @@ export function initStorage() {
     localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(initialData.dashboardStats));
   }
 
-  if (!localStorage.getItem(STORAGE_KEYS.WEEKLY_GOAL)) {
-    localStorage.setItem(STORAGE_KEYS.WEEKLY_GOAL, JSON.stringify(initialData.weeklyGoal));
-  }
-
   if (!localStorage.getItem(STORAGE_KEYS.PROGRESS_STATS)) {
     localStorage.setItem(STORAGE_KEYS.PROGRESS_STATS, JSON.stringify(initialData.progressStats));
-  }
-
-  if (!localStorage.getItem(STORAGE_KEYS.WEEKLY_PROGRESS)) {
-    localStorage.setItem(STORAGE_KEYS.WEEKLY_PROGRESS, JSON.stringify(initialData.weeklyProgress));
-  }
-
-  if (!localStorage.getItem(STORAGE_KEYS.OVERALL_PROGRESS)) {
-    localStorage.setItem(STORAGE_KEYS.OVERALL_PROGRESS, JSON.stringify(initialData.overallProgress));
   }
 
   if (!localStorage.getItem(STORAGE_KEYS.FEATURED_STUDY)) {

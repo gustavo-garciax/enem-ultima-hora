@@ -1,64 +1,33 @@
-import { storageAdapter, initStorage } from './storageAdapter';
+import { supabase } from './supabaseClient';
 
-initStorage();
+function mapSupabaseUser(supabaseUser) {
+  if (!supabaseUser) return null;
+  const meta = supabaseUser.user_metadata || {};
 
-/**
- * Camada de serviço de autenticação.
- * Métodos assíncronos (Promises) para simular o comportamento de chamadas de API reais.
- * Quando um backend real for configurado, basta alterar estas funções para chamar fetch/axios.
- */
+  return {
+    id: supabaseUser.id,
+    email: supabaseUser.email,
+    name: meta.name || supabaseUser.email.split('@')[0],
+    initials: meta.initials || supabaseUser.email.slice(0, 2).toUpperCase(),
+    grade: meta.grade || '3º ano — Nível Médio',
+  };
+}
+
 export const authService = {
-  /**
-   * Realiza login do usuário
-   * @param {string} email 
-   * @param {string} password 
-   */
   async login(email, password) {
-    // Simula delay de rede de 300ms
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
 
-    const registeredUser = storageAdapter.get(storageAdapter.KEYS.USER);
-
-    // Validação flexível: aceita as credenciais do usuário cadastrado ou simula login para qualquer usuário
-    if (registeredUser && registeredUser.email.toLowerCase() === email.trim().toLowerCase()) {
-      storageAdapter.set(storageAdapter.KEYS.SESSION, registeredUser);
-      return { success: true, user: registeredUser };
+    if (error) {
+      throw new Error('E-mail ou senha inválidos.');
     }
 
-    // Se o usuário digitou outro e-mail válido, cria a sessão para permitir teste imediato
-    if (email && password) {
-      const nameFromEmail = email.split('@')[0];
-      const initials = nameFromEmail.slice(0, 2).toUpperCase();
-      const newUser = {
-        name: nameFromEmail.charAt(0).toUpperCase() + nameFromEmail.slice(1),
-        initials,
-        email: email.trim(),
-        birthdate: '01/01/2007',
-        school: 'Escola de Ensino Médio',
-        grade: '3º ano — Nível Médio',
-        level: 'medio',
-        preferences: {
-          studyReminders: true,
-          goalAlerts: true,
-          emailNotifications: false,
-          darkMode: false,
-        },
-      };
-      storageAdapter.set(storageAdapter.KEYS.USER, newUser);
-      storageAdapter.set(storageAdapter.KEYS.SESSION, newUser);
-      return { success: true, user: newUser };
-    }
-
-    throw new Error('E-mail ou senha inválidos.');
+    return { success: true, user: mapSupabaseUser(data.user) };
   },
 
-  /**
-   * Cadastra um novo estudante
-   * @param {Object} userData 
-   */
   async register({ name, email, password, grade }) {
-    await new Promise((resolve) => setTimeout(resolve, 350));
-
     if (!name || !email || !password) {
       throw new Error('Preencha todos os campos obrigatórios.');
     }
@@ -71,71 +40,44 @@ export const authService = {
       .join('')
       .toUpperCase();
 
-    const newUser = {
-      name: name.trim(),
-      initials: initials || 'AL',
+    const { data, error } = await supabase.auth.signUp({
       email: email.trim(),
-      birthdate: '15/05/2007',
-      school: 'Ensino Médio / Pré-Vestibular',
-      grade: grade || '3º ano — Nível Médio',
-      level: 'medio',
-      preferences: {
-        studyReminders: true,
-        goalAlerts: true,
-        emailNotifications: false,
-        darkMode: false,
+      password,
+      options: {
+        data: { name: name.trim(), initials, grade },
       },
-    };
+    });
 
-    storageAdapter.set(storageAdapter.KEYS.USER, newUser);
-    storageAdapter.set(storageAdapter.KEYS.SESSION, newUser);
-    return { success: true, user: newUser };
-  },
-
-  /**
-   * Retorna os dados do usuário atualmente autenticado
-   */
-  async getCurrentUser() {
-    const session = storageAdapter.get(storageAdapter.KEYS.SESSION);
-    return session || null;
-  },
-
-  /**
-   * Atualiza os dados cadastrais do perfil do estudante
-   * @param {Object} updatedFields 
-   */
-  async updateProfile(updatedFields) {
-    await new Promise((resolve) => setTimeout(resolve, 200));
-
-    const currentUser = storageAdapter.get(storageAdapter.KEYS.USER) || {};
-    const updated = {
-      ...currentUser,
-      ...updatedFields,
-    };
-
-    // Recalcula iniciais se o nome tiver mudado
-    if (updatedFields.name) {
-      updated.initials = updatedFields.name
-        .trim()
-        .split(' ')
-        .map((n) => n[0])
-        .slice(0, 2)
-        .join('')
-        .toUpperCase();
+    if (error) {
+      throw new Error(error.message || 'Erro ao cadastrar conta.');
     }
 
-    storageAdapter.set(storageAdapter.KEYS.USER, updated);
-    storageAdapter.set(storageAdapter.KEYS.SESSION, updated);
-    return updated;
+    return { success: true, user: mapSupabaseUser(data.user) };
   },
 
-  /**
-   * Encerra a sessão atual
-   */
+  async getCurrentUser() {
+    const { data } = await supabase.auth.getSession();
+    return mapSupabaseUser(data.session?.user);
+  },
+
+  async updateProfile(updatedFields) {
+    const initials = updatedFields.name
+      ? updatedFields.name.trim().split(' ').map((n) => n[0]).slice(0, 2).join('').toUpperCase()
+      : undefined;
+
+    const { data, error } = await supabase.auth.updateUser({
+      data: { ...updatedFields, ...(initials ? { initials } : {}) },
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return mapSupabaseUser(data.user);
+  },
+
   async logout() {
-    await new Promise((resolve) => setTimeout(resolve, 150));
-    storageAdapter.remove(storageAdapter.KEYS.SESSION);
+    await supabase.auth.signOut();
     return { success: true };
   },
 };
-

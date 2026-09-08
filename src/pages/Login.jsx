@@ -11,14 +11,14 @@ export default function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Campos de login
-  const [loginEmail, setLoginEmail] = useState('lucas.carvalho@email.com');
-  const [loginPassword, setLoginPassword] = useState('123456');
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
 
   // Campos de cadastro
   const [regName, setRegName] = useState('');
   const [regEmail, setRegEmail] = useState('');
   const [regPassword, setRegPassword] = useState('');
-  const [regGrade, setRegGrade] = useState('3º ano — Nível Médio');
+  const [regGrade, setRegGrade] = useState('');
 
   const { user, login, register } = useAuth();
   const navigate = useNavigate();
