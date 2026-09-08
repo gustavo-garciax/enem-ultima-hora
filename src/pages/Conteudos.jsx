@@ -16,6 +16,7 @@ const PDF_POR_MATERIA = {
   'Química': '/pdf/quimica-enem.pdf',
   'Filosofia': '/pdf/filosofia-enem.pdf',
   'Estrategia prova': '/pdf/estrategia-prova.pdf',
+  'Mapa Mentais': '/pdf/mapa-mentais.pdf',
 };
 
 export default function Conteudos() {
@@ -37,14 +38,7 @@ export default function Conteudos() {
                   <span className="subj-emoji-icon">{subj.icon}</span>
                 </div>
                 <h3 className="subj-card-title">{subj.name}</h3>
-                <p className="subj-card-counts">
-                  {subj.aulas} aulas • {subj.exercicios} exercícios
-                </p>
                 <div className="subj-card-prog-wrap">
-                  <div className="subj-prog-top-row">
-                    <span className="subj-prog-label">Progresso</span>
-                    <span className="subj-prog-val" style={{ color: subj.color }}>{subj.progress}%</span>
-                  </div>
                   <ProgressBar
                     value={subj.progress}
                     color={subj.color}

@@ -261,6 +261,16 @@
       "progress": 61,
       "color": "#FB6514",
       "studiedHours": 10
+    },
+    {
+      "id": "mapa-mentais",
+      "name": "Mapa Mentais",
+      "icon": "🗺️",
+      "aulas": 22,
+      "exercicios": 130,
+      "progress": 61,
+      "color": "#FB6514",
+      "studiedHours": 10
     }
    
   ],
